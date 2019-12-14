@@ -17,9 +17,17 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
+
     # a simple example
+    # from flask_login import login_required
+    # @login_required
     @app.route("/index")
     def index():
         return "hi,index"
-    return app
 
+    from . import db
+    db.init_app(app)
+    from . import auth
+    app.register_blueprint(auth.bp)
+
+    return app
